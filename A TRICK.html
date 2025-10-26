@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARVINAI tricks you!!!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // 配置Tailwind自定义赛博色调
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyberBlue: '#00f0ff',
+                        cyberPurple: '#a020f0',
+                        cyberRed: '#ff3a3a',
+                        cyberGreen: '#39ff14',
+                        cyberYellow: '#fff200',
+                        cyberBlack: '#0a0a1a'
+                    },
+                    fontFamily: {
+                        delta: ['"Orbitron"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow-blue { text-shadow: 0 0 8px #00f0ff, 0 0 20px #00f0ff80; }
+            .text-glow-red { text-shadow: 0 0 8px #ff3a3a, 0 0 20px #ff3a3a80; }
+            .text-glow-green { text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff1480; }
+            .text-glow-purple { text-shadow: 0 0 8px #a020f0, 0 0 20px #a020f080; }
+            .bg-grid { background-image: linear-gradient(rgba(0,240,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.1) 1px, transparent 1px); background-size: 20px 20px; }
+            .border-glow { box-shadow: 0 0 10px #00f0ff, inset 0 0 10px #00f0ff80; }
+            .btn-pulse { animation: pulse 1.5s infinite; }
+            .text-fade-in { animation: fadeIn 0.8s ease forwards; }
+            .text-fade-out { animation: fadeOut 0.5s ease forwards; }
+            .scan-line { position: absolute; top: -100%; left: 0; width: 100%; height: 4px; background: rgba(57,255,20,0.7); animation: scan 4s linear infinite; }
+            
+            @keyframes pulse {
+                0%,100% { box-shadow: 0 0 10px #a020f0, inset 0 0 8px #a020f080; }
+                50% { box-shadow: 0 0 20px #a020f0, inset 0 0 15px #a020f0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); filter: blur(2px); }
+                to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); filter: blur(2px); }
+            }
+            @keyframes scan {
+                0% { top: -10%; }
+                100% { top: 110%; }
+            }
+        }
+    </style>
+    <!-- 三角洲风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-cyberBlack text-white font-delta overflow-hidden relative flex flex-col">
+    <!-- 扫描线特效 -->
+    <div class="scan-line"></div>
+    <!-- 网格背景 -->
+    <div class="bg-grid absolute inset-0 z-0"></div>
+    <!-- 动态粒子背景 -->
+    <div id="particles" class="absolute inset-0 z-0"></div>
+
+    <!-- 主内容容器 -->
+    <div class="container mx-auto px-4 py-16 relative z-10 flex flex-col items-center justify-center flex-grow">
+        <!-- 三角洲风格标题 -->
+        <div class="mb-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-cyberGreen text-glow-green mb-2">
+                DELTA SECURITY
+            </h1>
+            <p class="text-cyberBlue text-glow-blue text-lg md:text-xl">攻防演示模拟系统 v1.0</p >
+        </div>
+
+        <!-- 文本显示区域（带边框发光） -->
+        <div class="w-full max-w-2xl h-64 md:h-80 bg-cyberBlack/70 border-2 border-cyberBlue border-glow rounded-lg flex items-center justify-center p-8 md:p-12 mb-10 relative overflow-hidden">
+            <!-- 文本容器（单句显示） -->
+            <div id="textContainer" class="text-lg md:text-xl"></div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <button id="nextBtn" class="btn-pulse bg-cyberPurple/30 border-2 border-cyberPurple text-cyberYellow text-glow-purple px-8 py-3 rounded-lg text-xl font-bold hover:bg-cyberPurple/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:animate-none">
+            ‼️不要点我‼️
+        </button>
+    </div>
+
+    <!-- 页脚文字修改为“MARVIN” -->
+    <footer class="relative z-10 py-4 text-center text-cyberBlue text-glow-blue font-delta text-lg md:text-xl">
+        MARVIN
+    </footer>
+
+    <script>
+        // 文本内容数组
+        const texts = [
+            { content: "攻防演示成功🥹", className: "text-cyberGreen text-glow-green" },
+            { content: "你刚刚因为有人让你扫，你就扫了一个来历不明的二维码😬", className: "text-cyberYellow" },
+            { content: "如果这是真实的攻击，你的设备信息可能已被记录🥴", className: "text-cyberRed text-glow-red" },
+            { content: "你可能会被引导到 钓鱼 网站，导致你的账号密码泄露😈", className: "text-cyberRed text-glow-red" },
+            { content: "你的手机可能被植入恶意软件。👹👹", className: "text-cyberRed text-glow-red" },
+            { content: "So在数字世界，请永远保持警惕之心🫰🏻", className: "text-cyberBlue text-glow-blue" },
+            { content: "By 新生研讨小组  👽第五组👽", className: "text-cyberPurple text-glow-purple text-center" }
+        ];
+
+        // DOM元素
+        const textContainer = document.getElementById('textContainer');
+        const nextBtn = document.getElementById('nextBtn');
+        const particles = document.getElementById('particles');
+
+        // 状态变量
+        let currentIndex = 0;
+
+        // 初始化粒子背景（增强动态感）
+        function initParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 3 + 1;
+                particle.className = 'absolute bg-cyberBlue/50 rounded-full';
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                
+                // 浮动动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes float {
+                        0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+                        50% { transform: translateY(-30px) translateX(15px); opacity: 0.8; }
+                        100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // 切换文本（先消失再显示新句）
+        function switchText() {
+            // 1. 若有当前文本，先执行消失动画
+            const currentText = textContainer.firstChild;
+            if (currentText) {
+                currentText.classList.add('text-fade-out');
+                // 等待消失动画结束后再添加新文本
+                setTimeout(() => {
+                    textContainer.innerHTML = '';
+                    addNewText();
+                }, 500); // 与fadeOut动画时长一致
+            } else {
+                // 初始无文本时直接添加第一句
+                addNewText();
+            }
+        }
+
+        // 添加新文本（执行淡入动画）
+        function addNewText() {
+            if (currentIndex >= texts.length) {
+                nextBtn.disabled = true;
+                nextBtn.textContent = "演示结束";
+                return;
+            }
+
+            // 创建新文本元素
+            const newText = document.createElement('div');
+            newText.textContent = texts[currentIndex].content;
+            newText.className = `text-fade-in ${texts[currentIndex].className}`;
+            textContainer.appendChild(newText);
+
+            // 更新索引
+            currentIndex++;
+
+            // 最后一句时修改按钮文字
+            if (currentIndex >= texts.length) {
+                nextBtn.textContent = "演示结束";
+            }
+        }
+
+        // 事件监听
+        nextBtn.addEventListener('click', switchText);
+
+        // 页面加载初始化
+        window.addEventListener('load', () => {
+            initParticles();
+            // 初始显示第一句
+            addNewText();
+        });
+    </script>
+</body>
+</html>
